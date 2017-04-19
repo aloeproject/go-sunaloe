@@ -1,0 +1,8 @@
+<script src="/static/vendor/umeditor/third-party/template.min.js"></script>
+<script src="/static/vendor/umeditor/umeditor.config.js"></script>
+<script src="/static/vendor/umeditor/umeditor.min.js"></script>
+<script src="/static/vendor/umeditor/lang/zh-cn/zh-cn.js"></script>
+<script>
+    var um = UM.getEditor('myEditor');
+    {{if not .is_add }}um.setContent({{.article_info.Content}}, true);{{end}}
+</script>

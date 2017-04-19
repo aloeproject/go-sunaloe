@@ -1,0 +1,23 @@
+<div class="row">
+    <main class="col-md-8">
+        <article class="post post-1">
+            <header class="entry-header">
+                <h1 class="entry-title">{{.article_info.Title}}</h1>
+                <div class="entry-meta">
+                    <span class="post-category"><a href="#">分类待添加</a></span>
+
+                    <span class="post-date"><a href="#"><time class="entry-date">{{.article_info.Create_time}}</time></a></span>
+
+                    <span class="post-author"><a href="#">系统管理员</a></span>
+                    <!--
+                    <span class="comments-link"><a href="#">4 Comments</a></span>
+                    -->
+                </div>
+            </header>
+            <div class="entry-content clearfix">
+                {{str2html .article_info.Content}}
+            </div>
+        </article>
+    </main>
+    {{template "frontend/layout/right-sidebar.html" .}}
+</div>

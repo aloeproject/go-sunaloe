@@ -1,0 +1,27 @@
+<script type="text/javascript" src="/static/js/bootstrap-paginator.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".pagination").bootstrapPaginator({
+            currentPage: '{{.page.PageNo}}',
+            totalPages: '{{.page.TotalPage}}',
+            bootstrapMajorVersion: 3,
+            size: "small",
+            onPageClicked: function(e,originalEvent,type,page){
+                window.location.href = "/admin/article?p=" + page
+            }
+        });
+
+        $(".js-article-del").on('click',function () {
+            var aid = $(this).attr("data-value")
+            $.post('/admin/article/del',{aid:aid},function (json) {
+                if (json.Code == 200) {
+                    alert("删除成功")
+                    window.location.reload()
+                } else {
+                    alert(json.Msg)
+                }
+            })
+        })
+    });
+
+</script>

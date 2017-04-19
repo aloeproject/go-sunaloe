@@ -1,0 +1,33 @@
+<div class="row">
+    <main class="col-md-8">
+        {{range $index,$item := .article_list }}
+        <article class="post">
+            <header class="entry-header">
+                <h1 class="entry-title">
+                    <a href="/d/{{$item.Id}}">{{$item.Title}}</a>
+                </h1>
+                <div class="entry-meta">
+                    <span class="post-category"><a href="#">PHP</a></span>
+
+                    <span class="post-date"><a href="#"><time class="entry-date">{{$item.Create_time}}</time></a></span>
+
+                    <span class="post-author"><a href="#">系统管理员</a></span>
+                    <!--
+                    <span class="comments-link"><a href="#">4 Comments</a></span>
+                    -->
+                </div>
+            </header>
+            <div class="entry-content clearfix">
+                <p>
+                    {{html2str $item.Content|ShortArticleContent}}
+                </p>
+                <div class="read-more cl-effect-14">
+                    <a href="/d/{{$item.Id}}" class="more-link">继续阅读<span class="meta-nav">→</span></a>
+                </div>
+            </div>
+        </article>
+        <hr/>
+        {{end}}
+    </main>
+    {{template "frontend/layout/right-sidebar.html" .}}
+</div>
