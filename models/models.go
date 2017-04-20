@@ -4,6 +4,8 @@ import (
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
 	"errors"
+	"fmt"
+	"github.com/astaxie/beego"
 )
 
 type UserAdmin struct {
@@ -37,5 +39,9 @@ var EmptyData = errors.New("数据为空")
 func init(){
 	orm.RegisterModel(new(UserAdmin),new(Article))
 	orm.RegisterDriver("mysql",orm.DRMySQL)
-	orm.RegisterDataBase("default","mysql","root:123456@/sunaloe_blog?charset=utf8",30)
+	dbuser := beego.AppConfig.String("dbuser")
+	dbpasswd := beego.AppConfig.String("dbpasswd")
+	dbname := beego.AppConfig.String("dbname")
+	dataSource := fmt.Sprintf("%s:%s@/%s?charset=utf8",dbuser,dbpasswd,dbname)
+	orm.RegisterDataBase("default","mysql",dataSource,30)
 }
