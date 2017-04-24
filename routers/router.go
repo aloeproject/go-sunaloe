@@ -19,8 +19,8 @@ func init() {
 	beego.Router("/admin", &ad.IndexController{},"get:Index")
 	beego.Router("/auth/login", &ad.AuthController{},"get:Login")
 	beego.Router("/auth/login_post", &ad.AuthController{},"post:Login_post")
-	beego.Router("/auth/reg", &ad.AuthController{},"get:Reg")
-	beego.Router("/auth/reg_post", &ad.AuthController{},"post:Reg_post")
+	//beego.Router("/auth/reg", &ad.AuthController{},"get:Reg")
+	//beego.Router("/auth/reg_post", &ad.AuthController{},"post:Reg_post")
 	//文章
 	beego.Router("/admin/article", &ad.ArticleController{},"get:Index")
 	beego.Router("/admin/article/add", &ad.ArticleController{},"post,get:Add")
