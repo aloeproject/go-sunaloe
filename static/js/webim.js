@@ -5,7 +5,7 @@ $(function () {
         "init":function () {
             // Create a socket
             //socket = new WebSocket('ws://' + 'localhost:8080' + '/ws/join?uname=123');
-            socket = new WebSocket('ws://' + 'localhost:8081' + '/im');
+            socket = new WebSocket('ws://' + window.location.host  + '/im');
             this.socket = socket
             // Message received on the socket
             socket.onmessage = function (event) {
