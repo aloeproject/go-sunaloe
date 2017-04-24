@@ -2,8 +2,8 @@ package frontend
 
 import (
 	"myweb/repository"
-	"myweb/library"
 	"fmt"
+	"myweb/helper"
 )
 
 var PAGE_SIZE = 10
@@ -21,7 +21,7 @@ func (this *IndexController) Index()  {
 	}
 	articleList,_ := rep.List(thisPage -1,PAGE_SIZE)
 	count,_ := rep.Count()
-	page := library.NewPage(count,thisPage,PAGE_SIZE,articleList)
+	page := helper.NewPage(count,thisPage,PAGE_SIZE,articleList)
 	this.Data["page"] = page
 	this.Data["article_list"] = articleList
 	fmt.Println(articleList)
@@ -32,7 +32,7 @@ func (this *IndexController) Index()  {
 func (this *IndexController) Detail()  {
 	this.init()
 	aid := this.Ctx.Input.Param(":id")
-	id,_ := library.String2int(aid)
+	id,_ := helper.String2int(aid)
 	rep := repository.ArticleRepository{Id:id}
 	articleInfo := rep.GetInfoById()
 	if articleInfo.Id == 0 {

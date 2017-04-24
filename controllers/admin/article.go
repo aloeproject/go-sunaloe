@@ -3,8 +3,8 @@ package admin
 import (
 	"myweb/repository"
 	"fmt"
-	"myweb/library"
 	"myweb/models"
+	"myweb/helper"
 )
 
 var PAGE_SIZE = 10
@@ -20,7 +20,7 @@ func (this *BaseController) Index()  {
 	thisPage,_ := this.GetInt("p",1)
 	articleList,_ := rep.List(thisPage -1,PAGE_SIZE)
 	count,_ := rep.Count()
-	page := library.NewPage(count,thisPage,PAGE_SIZE,articleList)
+	page := helper.NewPage(count,thisPage,PAGE_SIZE,articleList)
 	this.LayoutSections = make(map[string]string)
 	this.LayoutSections["Scripts"] = "backend/article/script.html"
 	this.Data["article_list"] = articleList

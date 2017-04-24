@@ -3,6 +3,7 @@ package routers
 import (
 	ad "myweb/controllers/admin"
 	fd "myweb/controllers/frontend"
+	im "myweb/controllers/websocket"
 	"github.com/astaxie/beego"
 )
 
@@ -11,6 +12,7 @@ func init() {
 	//前台
 	beego.Router("/", &fd.IndexController{},"get:Index")
 	beego.Router("/d/:id([0-9]+)", &fd.IndexController{},"get:Detail")
+	beego.Router("/im",&im.IndexController{},"get:WSocket")
 
 	//后台
 	//登录和注册

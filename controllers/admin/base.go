@@ -54,6 +54,5 @@ func (this *BaseController) checkPage(url string){
 func (this *BaseController) Prepare()  {
 	url := this.Data["RouterPattern"]
 	this.RouterPattern = fmt.Sprint(url)
-	fmt.Println(this.GetSession(repository.UserSessionKey))
 	this.checkPage(this.RouterPattern)
 }

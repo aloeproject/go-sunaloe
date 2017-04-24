@@ -5,7 +5,7 @@ import (
 	"github.com/astaxie/beego"
 	//"html/template"
 	//"os"
-	"myweb/library"
+	"myweb/helper"
 	"github.com/astaxie/beego/orm"
 )
 
@@ -27,7 +27,7 @@ func main() {
 	beego.SetStaticPath("/static","static")
 	beego.SetStaticPath("/img","static/img")
 
-	beego.AddFuncMap("ShortArticleContent", library.ShortArticleContent)
+	beego.AddFuncMap("ShortArticleContent", helper.ShortArticleContent)
 	beego.Run()
 }
 

@@ -1,13 +1,26 @@
 .pace .pace-progress {
-  background: #000;
-  position: fixed;
-  z-index: 2000;
-  top: 0;
-  left: 0;
-  height: 1px;
-  transition: width 1s;
+    background: #000;
+    position: fixed;
+    z-index: 2000;
+    top: 0;
+    left: 0;
+    height: 1px;
+    transition: width 1s;
 }
 
 .pace-inactive {
-  display: none;
+    display: none;
+}
+
+#anonymous-im {
+    width: 150px;
+    height: 30px;
+    position: fixed;
+    right: 150px;
+    bottom: 0;
+    z-index: 3;
+    background: #777;
+    color: #fff;
+    padding: 8px;
+    cursor: pointer;
 }

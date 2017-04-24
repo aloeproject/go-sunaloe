@@ -5,7 +5,7 @@ import (
 	"myweb/models"
 	"fmt"
 	"strconv"
-	"myweb/library"
+	"myweb/helper"
 	"errors"
 )
 
@@ -65,8 +65,8 @@ func (this *ArticleRepository) Add() (bool,error) {
 	ar.Content = this.Content
 	ar.Title_img = this.Title_img
 	ar.Status = 10
-	ar.Create_time = library.GetNowDate()
-	ar.Update_time = library.GetNowDate()
+	ar.Create_time = helper.GetNowDate()
+	ar.Update_time = helper.GetNowDate()
 	_,err := model.Insert(ar)
 	if err == nil {
 		return true,nil
@@ -91,7 +91,7 @@ func (this *ArticleRepository) Edit(id int) (bool,error) {
 		if this.Title_img != ""{
 			ar.Title_img = this.Title_img
 		}
-		ar.Update_time = library.GetNowDate()
+		ar.Update_time = helper.GetNowDate()
 		num,err := model.Update(&ar)
 		if err != nil {
 			return false,err

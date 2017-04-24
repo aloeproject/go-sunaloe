@@ -5,7 +5,7 @@ import (
 	"myweb/models"
 	"myweb/vendor"
 	"errors"
-	"myweb/library"
+	"myweb/helper"
 )
 
 const UserSessionKey = "user"
@@ -60,8 +60,8 @@ func (this *UserRepository) Register(username,email,password string) (bool,error
 	newUser.Username = username
 	newUser.Email = email
 	newUser.Password_hash = vendor.GetPasswordHash(password)
-	newUser.Create_time = library.GetNowDate()
-	newUser.Update_time = library.GetNowDate()
+	newUser.Create_time = helper.GetNowDate()
+	newUser.Update_time = helper.GetNowDate()
 	row,err := o.Insert(newUser)
 	if row != 0 {
 		return true,nil
