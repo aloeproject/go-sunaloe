@@ -1,0 +1,78 @@
+<script type="text/javascript" src="/static/js/echarts.common.min.js"></script>
+<script type="text/javascript">
+    // 指定图表的配置项和数据
+    var  option = {
+        title: {
+            text: '动态数据 + 时间坐标轴'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend : {
+            data:['实时数据'],
+        },
+        xAxis: {
+            type: 'time',
+            splitLine: {
+                show: false
+            }
+        },
+        yAxis: {
+            type: 'value',
+            boundaryGap: [0, '100%'],
+            splitLine: {
+                show: false
+            }
+        },
+        series: [{
+            name: '模拟数据',
+            type: 'line',
+            showSymbol: false,
+            hoverAnimation: false,
+            data: []
+        }]
+    };
+   // 使用刚指定的配置项和数据显示图表。
+    //myChart.setOption(option);
+
+    var webIm = {
+        "socket":null,
+        "init":function () {
+            // Create a socket
+            //socket = new WebSocket('ws://' + 'localhost:8080' + '/ws/join?uname=123');
+            socket = new WebSocket('ws://' + window.location.host  + '/get_web_data');
+            this.socket = socket
+            // Message received on the socket
+            socket.onmessage = function (event) {
+                //var now = +new Date(1997, 9, 3);
+                var echartData = []
+                var data = JSON.parse(event.data);
+                for (key in data.Data_time) {
+                    var d = new Date()
+                    var nowTime = data.Data_time[key].split(":")
+                    d.setHours(nowTime[0],nowTime[1],nowTime[2])
+                    var tmp = {}
+                    tmp.name = d.toString()
+                    tmp.value = [[d.getFullYear(), d.getMonth() + 1, d.getDate()].join('/')+" "+nowTime.join(":"),data.Real_count[key]]
+                    //tmp.value = [d.toString(),data.Real_count[key]]
+                    echartData.push(tmp)
+                }
+                console.log(echartData)
+                myChart.setOption(option);
+                myChart.setOption({
+                    series: [{
+                        data: echartData
+                    }]
+                });
+                //console.log(echartData)
+
+            };
+
+        },
+    }
+    webIm.init()
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+
+</script>

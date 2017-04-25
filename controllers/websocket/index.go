@@ -43,7 +43,7 @@ func (this *IndexController) WSocket(){
 		}
 	}
 
-	fmt.Println(userObj,userHash)
+	//fmt.Println(userObj,userHash)
 	//进入聊天室
 	service.JoinRoom(userObj,ws)
 	//离开聊天室

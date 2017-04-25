@@ -13,12 +13,15 @@ func init() {
 	beego.Router("/", &fd.IndexController{},"get:Index")
 	beego.Router("/d/:id([0-9]+)", &fd.IndexController{},"get:Detail")
 	beego.Router("/im",&im.IndexController{},"get:WSocket")
+	beego.Router("/web_data",&im.RealtimeController{},"get:SetOnlineData")
+	beego.Router("/get_web_data",&im.RealtimeController{},"get:GetOnlineData")
 
 	//后台
 	//登录和注册
 	beego.Router("/admin", &ad.IndexController{},"get:Index")
 	beego.Router("/auth/login", &ad.AuthController{},"get:Login")
 	beego.Router("/auth/login_post", &ad.AuthController{},"post:Login_post")
+	beego.Router("/admin/manage/realtime", &ad.ManageController{},"get:Realtime")
 	//beego.Router("/auth/reg", &ad.AuthController{},"get:Reg")
 	//beego.Router("/auth/reg_post", &ad.AuthController{},"post:Reg_post")
 	//文章
