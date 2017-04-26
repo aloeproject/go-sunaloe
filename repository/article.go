@@ -7,6 +7,8 @@ import (
 	"strconv"
 	"myweb/helper"
 	"errors"
+	"strings"
+	"time"
 )
 
 type ArticleRepository struct {
@@ -16,6 +18,8 @@ type ArticleRepository struct {
 	Content string
 	Title_img string
 	Status int
+	St_Update_time time.Time
+	Ed_Update_time time.Time
 }
 
 func (this *ArticleRepository) GetInfoById() models.Article {
@@ -25,22 +29,29 @@ func (this *ArticleRepository) GetInfoById() models.Article {
 	return ar
 }
 
-func (this *ArticleRepository) List(currentPage int,pageSize int) ([]models.Article,error) {
+func (this *ArticleRepository) List(currentPage int,pageSize int) (*[]models.Article,error) {
 	model := orm.NewOrm()
 	var list []models.Article
 	var stWhere string
+	var dateWhere string
 	if this.Status == 0  {
 		stWhere = fmt.Sprint("1,10")
 	} else {
 		stWhere = fmt.Sprint("10")
 	}
+
+	if this.St_Update_time.Unix() == -62135596800  {
+		dateWhere = ""
+	} else {
+		dateWhere = fmt.Sprintf("AND update_time >= '%s' AND update_time <= '%s' ",fmt.Sprint(this.St_Update_time),fmt.Sprint(this.Ed_Update_time))
+	}
 	//当前页从0 开始
-	sql := fmt.Sprintf("SELECT * FROM article WHERE status IN (%s) LIMIT %d,%d",stWhere,currentPage * pageSize,pageSize)
+	sql := fmt.Sprintf("SELECT * FROM article WHERE status IN (%s) %s LIMIT %d,%d",stWhere,dateWhere,currentPage * pageSize,pageSize)
 	_ , err := model.Raw(sql).QueryRows(&list)
 	if err != nil {
 		return nil,models.EmptyData
 	}
-	return list,nil
+	return &list,nil
 }
 
 func (this *ArticleRepository) Count() (int ,error)  {
@@ -101,6 +112,37 @@ func (this *ArticleRepository) Edit(id int) (bool,error) {
 		}
 	}
 	return false,errors.New("没有做修改")
+}
+//最新文章
+func (this *ArticleRepository) NewestArticle() (*[]models.Article,error)  {
+	model := orm.NewOrm()
+	//当前页从0 开始
+	sql := fmt.Sprint("SELECT * FROM article WHERE status = 10 ORDER BY update_time desc LIMIT 5")
+	var list  []models.Article
+	_ , err := model.Raw(sql).QueryRows(&list)
+	if err != nil {
+		return nil,models.EmptyData
+	}
+	return &list,nil
+}
+
+func (this *ArticleRepository) GetDateCategory() (*map[string]string,error)  {
+	model := orm.NewOrm()
+	//当前页从0 开始
+	sql := fmt.Sprint("select left(update_time,7) as date_category from article group by left(update_time,7)")
+	var res  []orm.Params
+	_ , err := model.Raw(sql).Values(&res)
+	if err != nil {
+		return nil,models.EmptyData
+	}
+	ret := make(map[string]string)
+	for _,v := range res {
+		date := fmt.Sprint(v["date_category"])
+		dataArr := strings.Split(date,"-")
+		ret[date] = dataArr[0]+"年"+dataArr[1]+"月"
+	}
+	//ret := make(map[string]string)
+	return &ret,nil
 }
 
 func (this *ArticleRepository) Delete(id int) (bool,error) {

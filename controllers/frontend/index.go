@@ -2,8 +2,11 @@ package frontend
 
 import (
 	"myweb/repository"
-	"fmt"
 	"myweb/helper"
+	"strings"
+	"time"
+	"fmt"
+	"strconv"
 )
 
 var PAGE_SIZE = 10
@@ -15,16 +18,38 @@ type IndexController struct {
 func (this *IndexController) Index()  {
 	this.init()
 	rep := repository.ArticleRepository{Status:10}
+	date := this.Ctx.Input.Param(":date")
+	if date != "" {
+		dateArr := strings.Split(date,"-")
+		month,_ := strconv.Atoi(dateArr[1])
+		year,_ := strconv.Atoi(dateArr[0])
+		st := fmt.Sprint(dateArr[0],"-",fmt.Sprintf("%02d",month),"-01")
+		var ed string
+		if month == 12 {
+			ed = fmt.Sprint(fmt.Sprintf("%d",year + 1),"-","01","-01")
+		} else {
+			ed = fmt.Sprint(fmt.Sprintf("%d",year),"-",fmt.Sprintf("%02d",month + 1),"-01")
+		}
+		rep.St_Update_time ,_ = time.Parse("2006-01-02",st)
+		rep.Ed_Update_time ,_ = time.Parse("2006-01-02",ed)
+	}
 	thisPage,_ := this.GetInt("p",1)
 	if thisPage <= 1 {
 		thisPage = 1
 	}
+	//首页文章
 	articleList,_ := rep.List(thisPage -1,PAGE_SIZE)
 	count,_ := rep.Count()
 	page := helper.NewPage(count,thisPage,PAGE_SIZE,articleList)
+	//最新文章
+	newArticle,_ := rep.NewestArticle()
+
+	dateCategory,_ := rep.GetDateCategory()
+
 	this.Data["page"] = page
 	this.Data["article_list"] = articleList
-	fmt.Println(articleList)
+	this.Data["newest_list"] = newArticle
+	this.Data["date_category"] = dateCategory
 	this.TplName = "frontend/index/index.html"
 	this.Render()
 }

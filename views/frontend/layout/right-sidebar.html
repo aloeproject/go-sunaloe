@@ -2,29 +2,21 @@
     <div class="widget widget-recent-posts">
         <h3 class="widget-title">最近文章</h3>
         <ul>
+            {{range $index,$item := .newest_list }}
             <li>
-                <a href="#">最近文章一</a>
+                <a href="#">{{$item.Title}}</a>
             </li>
-            <li>
-                <a href="#">最近文章二</a>
-            </li>
-            <li>
-                <a href="#">最近文章三</a>
-            </li>
+            {{end}}
         </ul>
     </div>
     <div class="widget widget-archives">
         <h3 class="widget-title">日期</h3>
         <ul>
+            {{range $index,$item := .date_category }}
             <li>
-                <a href="#">2017 1月</a>
+                <a href="/date/{{$index}}">{{$item}}</a>
             </li>
-            <li>
-                <a href="#">2017 2月</a>
-            </li>
-            <li>
-                <a href="#">2017 3月</a>
-            </li>
+            {{end}}
         </ul>
     </div>
 
