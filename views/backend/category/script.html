@@ -1,0 +1,18 @@
+<script type="text/javascript" src="/static/js/bootstrap-paginator.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#js-add-category").on('click',function () {
+            var name = $("#js-category-name").val()
+            console.log(name)
+            $.post("/admin/category/add",{name:name},function (json) {
+                if (json.Code == 200) {
+                    alert("添加成功")
+                    window.location.reload()
+                } else {
+                    alert("添加失败，错误信息:"+json.Msg)
+                }
+            })
+        })
+    });
+
+</script>

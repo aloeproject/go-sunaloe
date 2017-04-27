@@ -34,10 +34,20 @@ type Article struct {
 	Update_time string
 }
 
+type Category struct {
+	Id int
+	Name string
+	Create_time string
+}
+
+func (a *Category) TableName() string {
+	return "category"
+}
+
 var EmptyData = errors.New("数据为空")
 
 func init(){
-	orm.RegisterModel(new(UserAdmin),new(Article))
+	orm.RegisterModel(new(UserAdmin),new(Article),new(Category))
 	orm.RegisterDriver("mysql",orm.DRMySQL)
 	dbuser := beego.AppConfig.String("dbuser")
 	dbpasswd := beego.AppConfig.String("dbpasswd")

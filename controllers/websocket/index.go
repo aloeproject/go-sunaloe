@@ -35,12 +35,14 @@ func (this *IndexController) WSocket(){
 		userObj = service.SocketUser{User_hash:userHash,User_id:userId,User_name:userName,Is_login:false,AnonymousId:anonymousId}
 		this.SetSession(webimUserSession,userObj)
 	} else {
+		userObj = webSession.(service.SocketUser)
+		userObj.Is_login = true
 		//interface{} 转换为 SocketUser类型
-		switch v := webSession.(type) {
+		/*switch v := webSession.(type) {
 		case service.SocketUser:
 			userObj = v
 			userObj.Is_login = true
-		}
+		}*/
 	}
 
 	fmt.Println(userObj,userHash)
