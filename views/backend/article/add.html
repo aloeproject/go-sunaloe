@@ -27,6 +27,27 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>分类</label>
+                                <select class="form-control" name="category">
+                                    <option value="0">无分类</option>
+                                    {{range $index,$item := .category_list }}
+                                        {{if not $.is_add}}
+                                            {{if eq $item.Id $.article_info.Category_id}}
+                                            <option value="{{$item.Id}}" selected>{{$item.Name}}</option>
+                                            {{else}}
+                                            <option value="{{$item.Id}}">{{$item.Name}}</option>
+                                            {{end}}
+                                        {{else}}
+                                            <option value="{{$item.Id}}">{{$item.Name}}</option>
+                                        {{end}}
+                                    {{end}}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-lg-10">
                             <script id="myEditor" name="content" type="text/plain" style="height:340px;width:800px;"></script>
                         </div>

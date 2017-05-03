@@ -13,6 +13,7 @@ func init() {
 	beego.Router("/", &fd.IndexController{},"get:Index")
 	beego.Router("/d/:id([0-9]+)", &fd.IndexController{},"get:Detail")
 	beego.Router("/date/:date([0-9]{4}-[0-9]{2})", &fd.IndexController{},"get:Index")
+	beego.Router("/c/:category_name([\u4e00-\u9fa5_a-zA-Z0-9]+)", &fd.IndexController{},"get:Index")
 	beego.Router("/im",&im.IndexController{},"get:WSocket")
 
 	//后台

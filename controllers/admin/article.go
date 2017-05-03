@@ -39,11 +39,15 @@ func (this *BaseController) Add()  {
 	this.Data["operation_msg"] = ""
 	//页面标识添加
 	this.Data["is_add"] = true
+	categRep := repository.CategoryRepository{}
+	cateList,_ := categRep.List(0,0)
+	this.Data["category_list"] = cateList
 
 	title := this.GetString("title")
 	content := this.GetString("content")
+	category,_ := this.GetInt("category")
 	if title != "" && content != "" {
-		re := repository.ArticleRepository{Category_id:0, Title:title, Content:content,Title_img:""}
+		re := repository.ArticleRepository{Category_id:category, Title:title, Content:content,Title_img:""}
 		if ok,err:=re.Add();ok {
 			this.Data["operation_msg"] = "添加成功"
 		} else {
@@ -68,11 +72,11 @@ func (this *BaseController) Edit(){
 	articleId,_ := this.GetInt("aid")
 	rep := repository.ArticleRepository{Id:articleId}
 	articleInfo = rep.GetInfoById()
-
 	if this.IsPost() {
 		title := this.GetString("title")
 		content := this.GetString("content")
-		re := repository.ArticleRepository{Category_id:0, Title:title, Content:content,Title_img:""}
+		categoryId,_ := this.GetInt("category")
+		re := repository.ArticleRepository{Category_id:categoryId, Title:title, Content:content,Title_img:""}
 		if ok,err:=re.Edit(articleId);ok {
 			this.Data["operation_msg"] = "修改成功"
 			rep := repository.ArticleRepository{Id:articleId}
@@ -81,7 +85,10 @@ func (this *BaseController) Edit(){
 			this.Data["operation_msg"] = fmt.Sprintf("修改失败，错误原因:%s",err)
 		}
 	}
+	cate := new(repository.CategoryRepository)
 	this.Data["article_info"] = articleInfo
+	categoryList,_ := cate.List(0,0)
+	this.Data["category_list"] = categoryList
 	this.Render()
 }
 

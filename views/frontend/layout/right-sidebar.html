@@ -23,15 +23,11 @@
     <div class="widget widget-category">
         <h3 class="widget-title">分类</h3>
         <ul>
+            {{range $index,$item := .category_list}}
             <li>
-                <a href="#">PHP</a>
+                <a href="/c/{{$item.Name}}">{{$item.Name}}</a>
             </li>
-            <li>
-                <a href="#">Linux</a>
-            </li>
-            <li>
-                <a href="#">Golang</a>
-            </li>
+            {{end}}
         </ul>
     </div>
 </aside>

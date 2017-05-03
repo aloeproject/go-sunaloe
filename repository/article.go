@@ -14,12 +14,27 @@ import (
 type ArticleRepository struct {
 	Id int
 	Category_id int
+	Category_name string
 	Title string
 	Content string
 	Title_img string
 	Status int
+	Create_time string
+	update_time string
 	St_Update_time time.Time
 	Ed_Update_time time.Time
+}
+
+type ArticleList struct {
+	Id int
+	Category_id int
+	Category_name string
+	Title string
+	Content string
+	Title_img string
+	Status int
+	Create_time string
+	Update_time string
 }
 
 func (this *ArticleRepository) GetInfoById() models.Article {
@@ -29,11 +44,13 @@ func (this *ArticleRepository) GetInfoById() models.Article {
 	return ar
 }
 
-func (this *ArticleRepository) List(currentPage int,pageSize int) (*[]models.Article,error) {
+
+
+func (this *ArticleRepository) List(currentPage int,pageSize int) (*[]ArticleList,error) {
 	model := orm.NewOrm()
-	var list []models.Article
+	var list []ArticleList
 	var stWhere string
-	var dateWhere string
+	var where string
 	if this.Status == 0  {
 		stWhere = fmt.Sprint("1,10")
 	} else {
@@ -41,12 +58,18 @@ func (this *ArticleRepository) List(currentPage int,pageSize int) (*[]models.Art
 	}
 
 	if this.St_Update_time.Unix() == -62135596800  {
-		dateWhere = ""
+		where = ""
 	} else {
-		dateWhere = fmt.Sprintf("AND update_time >= '%s' AND update_time <= '%s' ",fmt.Sprint(this.St_Update_time),fmt.Sprint(this.Ed_Update_time))
+		where = fmt.Sprintf("AND update_time >= '%s' AND update_time <= '%s' ",fmt.Sprint(this.St_Update_time),fmt.Sprint(this.Ed_Update_time))
 	}
+
+	if this.Category_name != "" {
+		where += fmt.Sprintf(" AND c.name = '%s' ",this.Category_name)
+	}
+
 	//当前页从0 开始
-	sql := fmt.Sprintf("SELECT * FROM article WHERE status IN (%s) %s LIMIT %d,%d",stWhere,dateWhere,currentPage * pageSize,pageSize)
+	sql := fmt.Sprintf("SELECT a.Id as id,category_id,ifnull(c.name,'无') as category_name,title,content,title_img,status,a.create_time as create_time,a.update_time as update_time" +
+		" FROM article a LEFT JOIN category c ON a.Category_id = c.id WHERE status IN (%s) %s ORDER BY update_time desc LIMIT %d,%d",stWhere,where,currentPage * pageSize,pageSize)
 	_ , err := model.Raw(sql).QueryRows(&list)
 	if err != nil {
 		return nil,models.EmptyData

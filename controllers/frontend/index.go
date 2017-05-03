@@ -33,6 +33,10 @@ func (this *IndexController) Index()  {
 		rep.St_Update_time ,_ = time.Parse("2006-01-02",st)
 		rep.Ed_Update_time ,_ = time.Parse("2006-01-02",ed)
 	}
+	category_name := this.Ctx.Input.Param(":category_name")
+	if category_name != "" {
+		rep.Category_name = category_name
+	}
 	thisPage,_ := this.GetInt("p",1)
 	if thisPage <= 1 {
 		thisPage = 1
@@ -45,11 +49,14 @@ func (this *IndexController) Index()  {
 	newArticle,_ := rep.NewestArticle()
 
 	dateCategory,_ := rep.GetDateCategory()
+	cateRep := repository.CategoryRepository{}
+	articleCate,_ := cateRep.List(0,0)
 
 	this.Data["page"] = page
 	this.Data["article_list"] = articleList
 	this.Data["newest_list"] = newArticle
 	this.Data["date_category"] = dateCategory
+	this.Data["category_list"] = articleCate
 	this.TplName = "frontend/index/index.html"
 	this.Render()
 }

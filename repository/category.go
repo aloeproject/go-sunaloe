@@ -43,7 +43,13 @@ func (this *CategoryRepository) List(currentPage,pageSize int) (*[]models.Catego
 	model := orm.NewOrm()
 	var list []models.Category
 	//当前页从0 开始
-	sql := fmt.Sprintf("SELECT * FROM category LIMIT %d,%d",currentPage * pageSize,pageSize)
+	var sql string
+	if pageSize == 0 {
+		sql = fmt.Sprint("SELECT * FROM category")
+	} else {
+
+		sql = fmt.Sprintf("SELECT * FROM category LIMIT %d,%d",currentPage * pageSize,pageSize)
+	}
 	_ , err := model.Raw(sql).QueryRows(&list)
 	if nil != err {
 		return nil,models.EmptyData
