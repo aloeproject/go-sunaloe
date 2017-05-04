@@ -9,9 +9,12 @@ import (
 
 var PAGE_SIZE = 10
 
+
+
 type ArticleController struct {
 	BaseController
 }
+
 
 func (this *BaseController) Index()  {
 	this.init()
@@ -46,13 +49,18 @@ func (this *BaseController) Add()  {
 	title := this.GetString("title")
 	content := this.GetString("content")
 	category,_ := this.GetInt("category")
-	if title != "" && content != "" {
-		re := repository.ArticleRepository{Category_id:category, Title:title, Content:content,Title_img:""}
-		if ok,err:=re.Add();ok {
-			this.Data["operation_msg"] = "添加成功"
+	if this.Ctx.Input.IsPost() == true {
+		if title != "" && content != "" {
+			re := repository.ArticleRepository{Category_id:category, Title:title, Content:content,Title_img:""}
+			if ok,err:=re.Add();ok {
+				this.Data["operation_msg"] = "添加成功"
+			} else {
+				this.Data["operation_msg"] = fmt.Sprintf("添加失败，错误原因:%s",err)
+			}
 		} else {
-			this.Data["operation_msg"] = fmt.Sprintf("添加失败，错误原因:%s",err)
+			this.Data["operation_msg"] = "标题或者内容不能为空"
 		}
+
 	}
 	this.Render()
 }

@@ -12,30 +12,25 @@ type AuthController struct {
 }
 
 func (this *AuthController) Login() {
-	this.TplName = "backend/auth/login.html"
-
-	this.Render()
-}
-
-func (this *AuthController) Login_post()  {
-	password := this.GetString("password")
-	email := this.GetString("email")
-	rep := repository.UserRepository{}
-	user,err := rep.Login(email,password)
-	if err!=nil || user.Id == 0 {
-		fmt.Println("登录失败，错误信息为:",err)
-	} else {
-		this.SetSession(repository.UserSessionKey,user)
-		//登录成功跳转
-		this.Redirect(LoginSuccessRedirect,302)
-		return
+	this.Data["error_info"] = ""
+	if this.Ctx.Input.IsPost() == true {
+		password := this.GetString("password")
+		email := this.GetString("email")
+		rep := repository.UserRepository{}
+		user,err := rep.Login(email,password)
+		if err!=nil || user.Id == 0 {
+			this.Data["error_info"] = "用户名或者密码错误"
+		} else {
+			this.SetSession(repository.UserSessionKey,user)
+			//登录成功跳转
+			this.Redirect(LoginSuccessRedirect,302)
+			return
+		}
 	}
-}
-
-func (this *AuthController) Reg(){
-	this.TplName = "backend/auth/reg.html"
+	this.TplName = "backend/auth/login.html"
 	this.Render()
 }
+
 
 func (this *AuthController) Reg_post()  {
 	username := this.GetString("username")
