@@ -59,8 +59,10 @@
                                 <label>文章首页图片上传
                                 </label>
                                 <input name="first_image" type="file"/>
+                                {{if not .is_add }}
                                 {{if ne .article_info.Title_img "" }}
                                 <span style="color: #CC0000">已经存在图片，重新上传进行修改</span>
+                                {{end}}
                                 {{end}}
                             </div>
                         </div>
