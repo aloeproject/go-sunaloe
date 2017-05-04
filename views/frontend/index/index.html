@@ -17,6 +17,11 @@
                     -->
                 </div>
             </header>
+            {{if ne "" $item.Title_img }}
+            <figure class="img-responsive-center">
+                <img class="img-responsive" src="{{$item.Title_img}}" alt="{{$item.Title}}" title="{{$item.Title}}">
+            </figure>
+            {{end}}
             <div class="entry-content clearfix">
                 <p>
                     {{html2str $item.Content|ShortArticleContent}}

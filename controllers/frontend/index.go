@@ -15,6 +15,7 @@ type IndexController struct {
 	BaseController
 }
 
+
 func (this *IndexController) Index()  {
 	this.init()
 	rep := repository.ArticleRepository{Status:10}
@@ -71,6 +72,16 @@ func (this *IndexController) Detail()  {
 		this.Abort("404")
 	}
 	this.Data["article_info"] = articleInfo
+	//最新文章
+	newArticle,_ := rep.NewestArticle()
+
+	dateCategory,_ := rep.GetDateCategory()
+	cateRep := repository.CategoryRepository{}
+	articleCate,_ := cateRep.List(0,0)
+
+	this.Data["newest_list"] = newArticle
+	this.Data["date_category"] = dateCategory
+	this.Data["category_list"] = articleCate
 
 	this.TplName = "frontend/index/detail.html"
 	this.Render()

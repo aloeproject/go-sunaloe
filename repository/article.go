@@ -37,6 +37,13 @@ type ArticleList struct {
 	Update_time string
 }
 
+func getTitleImg(str string) string {
+	if strings.Index(str,".") == 0 {
+		return str[1:]
+	}
+	return str
+}
+
 func (this *ArticleRepository) GetInfoById() models.Article {
 	model := orm.NewOrm()
 	ar := models.Article{Id:this.Id}
@@ -97,7 +104,7 @@ func (this *ArticleRepository) Add() (bool,error) {
 	ar.Category_id = this.Category_id
 	ar.Title = this.Title
 	ar.Content = this.Content
-	ar.Title_img = this.Title_img
+	ar.Title_img = getTitleImg(this.Title_img)
 	ar.Status = 10
 	ar.Create_time = helper.GetNowDate()
 	ar.Update_time = helper.GetNowDate()
@@ -123,7 +130,7 @@ func (this *ArticleRepository) Edit(id int) (bool,error) {
 			ar.Content = this.Content
 		}
 		if this.Title_img != ""{
-			ar.Title_img = this.Title_img
+			ar.Title_img = getTitleImg(this.Title_img)
 		}
 		ar.Update_time = helper.GetNowDate()
 		num,err := model.Update(&ar)

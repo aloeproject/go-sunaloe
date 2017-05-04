@@ -5,18 +5,49 @@ import (
 	"fmt"
 	"myweb/models"
 	"myweb/helper"
+//	"io/ioutil"
+	"io"
+	"os"
+	"time"
+	"log"
+	"net/http"
 )
 
 var PAGE_SIZE = 10
 
-
+func check(err error) {
+	//检查并定义一个panic异常
+	if err != nil {
+		log.Println(err)
+		panic(err)
+	}
+}
 
 type ArticleController struct {
 	BaseController
 }
 
+func uploadImg(req *http.Request) (string) {
+	f,h,err := req.FormFile("first_image")
+	check(err)
+	filename := h.Filename
+	//时间戳做随机
+	unix := fmt.Sprint(time.Now().Unix())
+	filename = unix+"_"+filename
+	dir,err := helper.GetUploadImageDir()
+	file := dir+"/"+filename
+	t,err :=os.Create(file)
+	check(err)
+	_,err = io.Copy(t,f)
+	check(err)
 
-func (this *BaseController) Index()  {
+	defer f.Close()
+	defer t.Close()
+	return file
+}
+
+
+func (this *ArticleController) Index()  {
 	this.init()
 	rep := repository.ArticleRepository{}
 	//获得当前页码
@@ -32,7 +63,7 @@ func (this *BaseController) Index()  {
 	this.Render()
 }
 
-func (this *BaseController) Add()  {
+func (this *ArticleController) Add()  {
 	this.init()
 	this.TplName = "backend/article/add.html"
 	this.LayoutSections = make(map[string]string)
@@ -50,8 +81,11 @@ func (this *BaseController) Add()  {
 	content := this.GetString("content")
 	category,_ := this.GetInt("category")
 	if this.Ctx.Input.IsPost() == true {
+		//图片上传
+		file := uploadImg(this.Ctx.Request)
+
 		if title != "" && content != "" {
-			re := repository.ArticleRepository{Category_id:category, Title:title, Content:content,Title_img:""}
+			re := repository.ArticleRepository{Category_id:category, Title:title, Content:content,Title_img:file}
 			if ok,err:=re.Add();ok {
 				this.Data["operation_msg"] = "添加成功"
 			} else {
@@ -65,7 +99,7 @@ func (this *BaseController) Add()  {
 	this.Render()
 }
 
-func (this *BaseController) Edit(){
+func (this *ArticleController) Edit(){
 	this.init()
 	this.TplName = "backend/article/add.html"
 	this.LayoutSections = make(map[string]string)
@@ -80,11 +114,18 @@ func (this *BaseController) Edit(){
 	articleId,_ := this.GetInt("aid")
 	rep := repository.ArticleRepository{Id:articleId}
 	articleInfo = rep.GetInfoById()
-	if this.IsPost() {
+	if this.Ctx.Input.IsPost() {
 		title := this.GetString("title")
 		content := this.GetString("content")
 		categoryId,_ := this.GetInt("category")
-		re := repository.ArticleRepository{Category_id:categoryId, Title:title, Content:content,Title_img:""}
+		//图片上传
+		f,_,_ := this.Ctx.Request.FormFile("first_image")
+		file := ""
+		if f != nil {
+			file = uploadImg(this.Ctx.Request)
+		}
+
+		re := repository.ArticleRepository{Category_id:categoryId, Title:title, Content:content,Title_img:file}
 		if ok,err:=re.Edit(articleId);ok {
 			this.Data["operation_msg"] = "修改成功"
 			rep := repository.ArticleRepository{Id:articleId}
@@ -101,7 +142,7 @@ func (this *BaseController) Edit(){
 }
 
 func (this *BaseController) Del(){
-	if this.IsPost() {
+	if this.Ctx.Input.IsPost() {
 		articleId,_ := this.GetInt("aid")
 		re := repository.ArticleRepository{}
 		st,err := re.Delete(articleId)
