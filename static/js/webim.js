@@ -22,10 +22,12 @@ $(function () {
     $("#anonymous-im").on("click",function () {
         $(".im-chat-window").show()
     })
-    $("body").on("click",function () {
-        $(this)
-        //$(".im-chat-window").hide()
-    })
+
+   $("#js-im-close").on("click",function () {
+       $(".im-chat-window").hide()
+   })
+
+
     
     $("#im-send-msg").on("click",function () {
         var content = $("#im-content").val()
