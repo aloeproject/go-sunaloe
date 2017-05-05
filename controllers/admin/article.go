@@ -82,7 +82,11 @@ func (this *ArticleController) Add()  {
 	category,_ := this.GetInt("category")
 	if this.Ctx.Input.IsPost() == true {
 		//图片上传
-		file := uploadImg(this.Ctx.Request)
+		f,_,_ := this.Ctx.Request.FormFile("first_image")
+		file := ""
+		if f != nil {
+			file = uploadImg(this.Ctx.Request)
+		}
 
 		if title != "" && content != "" {
 			re := repository.ArticleRepository{Category_id:category, Title:title, Content:content,Title_img:file}
