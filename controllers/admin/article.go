@@ -3,7 +3,6 @@ package admin
 import (
 	"myweb/repository"
 	"fmt"
-	"myweb/models"
 	"myweb/helper"
 //	"io/ioutil"
 	"io"
@@ -114,10 +113,9 @@ func (this *ArticleController) Edit(){
 	//页面标识修改
 	this.Data["is_add"] = false
 
-	var articleInfo models.Article
 	articleId,_ := this.GetInt("aid")
 	rep := repository.ArticleRepository{Id:articleId}
-	articleInfo = rep.GetInfoById()
+	articleInfo := rep.GetInfoById()
 	if this.Ctx.Input.IsPost() {
 		title := this.GetString("title")
 		content := this.GetString("content")

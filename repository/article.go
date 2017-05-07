@@ -44,11 +44,13 @@ func getTitleImg(str string) string {
 	return str
 }
 
-func (this *ArticleRepository) GetInfoById() models.Article {
+func (this *ArticleRepository) GetInfoById() *ArticleList {
 	model := orm.NewOrm()
-	ar := models.Article{Id:this.Id}
-	model.Read(&ar)
-	return ar
+	var info ArticleList
+	sql := fmt.Sprintf("SELECT a.Id as id,category_id,ifnull(c.name,'无') as category_name,title,content,title_img,status,a.create_time as create_time,a.update_time as update_time" +
+		" FROM article a LEFT JOIN category c ON a.Category_id = c.id WHERE a.Id = %d",this.Id)
+	model.Raw(sql).QueryRow(&info)
+	return &info
 }
 
 

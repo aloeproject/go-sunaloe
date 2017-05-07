@@ -18,6 +18,7 @@ type IndexController struct {
 
 func (this *IndexController) Index()  {
 	this.init()
+	this.PageKeyword(new(repository.ArticleList))
 	rep := repository.ArticleRepository{Status:10}
 	date := this.Ctx.Input.Param(":date")
 	if date != "" {
@@ -68,6 +69,7 @@ func (this *IndexController) Detail()  {
 	id,_ := helper.String2int(aid)
 	rep := repository.ArticleRepository{Id:id}
 	articleInfo := rep.GetInfoById()
+	this.PageKeyword(articleInfo)
 	if articleInfo.Id == 0 {
 		this.Abort("404")
 	}
