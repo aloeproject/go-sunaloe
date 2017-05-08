@@ -9,6 +9,7 @@ import (
 
 type BaseController struct {
 	beego.Controller
+	UUID string
 }
 
 func (this *BaseController) init()  {
@@ -29,10 +30,13 @@ func (this *BaseController) PageKeyword(list *repository.ArticleList){
 
 func (this *BaseController) Prepare()  {
 	//设置uuid cookie
-	_,bl := this.GetSecureCookie(beego.AppConfig.String("cookie.secure"),"uuid")
+	uuid,bl := this.GetSecureCookie(beego.AppConfig.String("cookie.secure"),"uuid")
 	if bl == false {
+		uuid = helper.GetUUID()
 		this.SetSecureCookie(beego.AppConfig.String("cookie.secure"),
 			"uuid",
-			helper.GetUUID(), 30*24*60*60, "/",beego.AppConfig.String("cookie.domain"), false, true)
+			uuid, 30*24*60*60, "/",beego.AppConfig.String("cookie.domain"), false, true)
 	}
+	this.UUID = uuid
+
 }

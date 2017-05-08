@@ -8,6 +8,7 @@ import (
 	"myweb/helper"
 	"github.com/astaxie/beego/orm"
 	"myweb/controllers/frontend"
+	"myweb/service/article-click"
 )
 
 func main() {
@@ -23,6 +24,7 @@ func main() {
 	beego.ErrorController(&frontend.ErrorController{})
 
 	beego.AddFuncMap("ShortArticleContent", helper.ShortArticleContent)
+	beego.AddFuncMap("ArticleClick", article_click.GetClick)
 	beego.Run()
 }
 

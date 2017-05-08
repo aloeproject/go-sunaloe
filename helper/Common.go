@@ -60,3 +60,4 @@ func GetUploadImageDir() (string,error) {
 	}
 	return uploadDir,nil
 }
+

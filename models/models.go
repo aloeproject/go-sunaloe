@@ -40,6 +40,18 @@ type Category struct {
 	Create_time string
 }
 
+type ArticleClick struct {
+	Id int
+	Aid int
+	Ip string
+	Gid string
+	Create_time string
+}
+
+func (a *ArticleClick) TableName() string {
+	return "article_click"
+}
+
 func (a *Category) TableName() string {
 	return "category"
 }
@@ -47,7 +59,7 @@ func (a *Category) TableName() string {
 var EmptyData = errors.New("数据为空")
 
 func init(){
-	orm.RegisterModel(new(UserAdmin),new(Article),new(Category))
+	orm.RegisterModel(new(UserAdmin),new(Article),new(Category),new(ArticleClick))
 	orm.RegisterDriver("mysql",orm.DRMySQL)
 	dbuser := beego.AppConfig.String("dbuser")
 	dbpasswd := beego.AppConfig.String("dbpasswd")

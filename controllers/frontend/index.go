@@ -7,6 +7,7 @@ import (
 	"time"
 	"fmt"
 	"strconv"
+	"myweb/service/article-click"
 )
 
 var PAGE_SIZE = 10
@@ -68,6 +69,11 @@ func (this *IndexController) Detail()  {
 	aid := this.Ctx.Input.Param(":id")
 	id,_ := helper.String2int(aid)
 	rep := repository.ArticleRepository{Id:id}
+	//设置点击量
+	article_click.SetClick(id,this.UUID,this.Ctx.Input.IP())
+	//获取点击率
+	clickNum := article_click.GetClick(id)
+
 	articleInfo := rep.GetInfoById()
 	this.PageKeyword(articleInfo)
 	if articleInfo.Id == 0 {
@@ -84,6 +90,7 @@ func (this *IndexController) Detail()  {
 	this.Data["newest_list"] = newArticle
 	this.Data["date_category"] = dateCategory
 	this.Data["category_list"] = articleCate
+	this.Data["click_num"] = clickNum
 
 	this.TplName = "frontend/index/detail.html"
 	this.Render()
