@@ -89,7 +89,19 @@ func (this *ArticleRepository) List(currentPage int,pageSize int) (*[]ArticleLis
 func (this *ArticleRepository) Count() (int ,error)  {
 	models := orm.NewOrm()
 	var res  []orm.Params
-	sql := "SELECT count(1) as ct FROM article WHERE status IN (1,10)"
+	where := ""
+
+	if this.St_Update_time.Unix() == -62135596800  {
+		where = ""
+	} else {
+		where = fmt.Sprintf("AND update_time >= '%s' AND update_time <= '%s' ",fmt.Sprint(this.St_Update_time),fmt.Sprint(this.Ed_Update_time))
+	}
+
+	if this.Category_name != "" {
+		where += fmt.Sprintf(" AND c.name = '%s' ",this.Category_name)
+	}
+
+	sql := fmt.Sprintf("SELECT count(1) as ct FROM article a LEFT JOIN category c ON a.Category_id = c.id WHERE status IN (1,10) %s",where)
 	_,err := models.Raw(sql).Values(&res)
 	if err != nil {
 		return 0,err

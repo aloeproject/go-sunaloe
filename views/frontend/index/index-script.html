@@ -1,0 +1,18 @@
+<script type="text/javascript" src="/static/js/bootstrap-paginator.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".pagingUl").bootstrapPaginator({
+            currentPage: '{{.page.PageNo}}',
+            totalPages: '{{.page.TotalPage}}',
+            containerClass:'pagingUl',
+            itemContainerClass: function (type, page, current) {
+                return (page === current) ? "activP" : "";
+            },
+            bootstrapMajorVersion: 3,
+            size: "small",
+            onPageClicked: function(e,originalEvent,type,page){
+                window.location.href = "/?p=" + page
+            }
+        });
+    });
+</script>

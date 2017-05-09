@@ -55,6 +55,10 @@ func (this *IndexController) Index()  {
 	cateRep := repository.CategoryRepository{}
 	articleCate,_ := cateRep.List(0,0)
 
+	this.LayoutSections = make(map[string]string)
+	this.LayoutSections["Scripts"] = "frontend/index/index-script.html"
+	this.LayoutSections["HeadHtml"] = "frontend/index/index-header.html"
+	this.Data["title"] = "Sunaloe |程序员博客|个人原创博客"
 	this.Data["page"] = page
 	this.Data["article_list"] = articleList
 	this.Data["newest_list"] = newArticle
@@ -87,6 +91,8 @@ func (this *IndexController) Detail()  {
 	cateRep := repository.CategoryRepository{}
 	articleCate,_ := cateRep.List(0,0)
 
+
+	this.Data["title"] = articleInfo.Title+"|个人原创博客"
 	this.Data["newest_list"] = newArticle
 	this.Data["date_category"] = dateCategory
 	this.Data["category_list"] = articleCate
