@@ -92,7 +92,7 @@ func (this *IndexController) Detail()  {
 	articleCate,_ := cateRep.List(0,0)
 
 
-	this.Data["title"] = articleInfo.Title+"|个人原创博客"
+	this.Data["title"] = articleInfo.Title+" - "+articleInfo.Category_name+" - Sunaloe"
 	this.Data["newest_list"] = newArticle
 	this.Data["date_category"] = dateCategory
 	this.Data["category_list"] = articleCate
