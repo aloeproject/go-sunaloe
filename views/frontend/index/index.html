@@ -4,7 +4,7 @@
         <article class="post">
             <header class="entry-header">
                 <h1 class="entry-title">
-                    <a href="/d/{{$item.Id}}">{{$item.Title}}</a>
+                    <a href="/d/{{$item.Id}}.html">{{$item.Title}}</a>
                 </h1>
                 <div class="entry-meta">
                     <span class="post-category"><a href="#">{{$item.Category_name}}</a></span>
@@ -28,7 +28,7 @@
                     {{html2str $item.Content|ShortArticleContent}}
                 </p>
                 <div class="read-more cl-effect-14">
-                    <a href="/d/{{$item.Id}}" class="more-link">继续阅读<span class="meta-nav">→</span></a>
+                    <a href="/d/{{$item.Id}}.html" class="more-link">继续阅读<span class="meta-nav">→</span></a>
                 </div>
             </div>
         </article>
