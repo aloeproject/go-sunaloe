@@ -147,7 +147,6 @@
             '</div>',
         init: function (editor, $w) {
             var me = this;
-
             me.editor = editor;
             me.dialog = $w;
             me.render(".edui-image-local", 1);
@@ -178,7 +177,6 @@
                 url=me.editor.options.imageUrl;
 
             url=url + (url.indexOf("?") == -1 ? "?" : "&") + "editorid="+me.editor.id;//初始form提交地址;
-
             $("form", $(sel, me.dialog)).attr("action", url);
 
             return me;
@@ -206,7 +204,8 @@
                 }
 
                 $('<iframe name="up"  style="display: none"></iframe>').insertBefore(me.dialog).on('load', function(){
-                    var r = this.contentWindow.document.body.innerHTML;
+                    //var r = this.contentWindow.document.body.innerHTML;
+                    var r = this.contentWindow.document.body.textContent;
                     if(r == '')return;
                     me.uploadComplete(r);
                     $(this).unbind('load');

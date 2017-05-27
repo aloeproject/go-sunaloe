@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"log"
 )
-
+var thisUserHash = ""
 //用户结构
 type SocketUser struct{
 	User_name string
@@ -25,7 +25,8 @@ type Subscriber struct {
 }
 
 //进入聊天室
-func JoinRoom(user SocketUser,ws *websocket.Conn){
+func JoinRoom(user SocketUser,ws *websocket.Conn,userhash string){
+	thisUserHash = userhash
 	subscribe <- Subscriber{User:user,Conn:ws}
 }
 //离开聊天室
@@ -134,14 +135,18 @@ func init()  {
 }
 //广播
 func broadcastWebSocket(event wsEvent){
-	data,err := json.Marshal(event)
-	if err != nil {
-		beego.Error("fail to marshal event:",err)
-		return
-	}
+
 	//循环通知订阅者
 	for sub := subscribers.Front();sub != nil;sub = sub.Next() {
 		ws := sub.Value.(Subscriber).Conn
+		if sub.Value.(Subscriber).User.User_hash == thisUserHash {
+			event.User.User_name = fmt.Sprintf("我(%s)",event.User.User_name)
+		}
+		data,err := json.Marshal(event)
+		if err != nil {
+			beego.Error("fail to marshal event:",err)
+			return
+		}
 		if ws != nil {
 			//广播通知，如果通知失败则已经离开房间
 			if ws.WriteMessage(websocket.TextMessage,data) != nil {

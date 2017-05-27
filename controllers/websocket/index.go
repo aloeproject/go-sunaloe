@@ -47,7 +47,7 @@ func (this *IndexController) WSocket(){
 
 	fmt.Println(userObj,userHash)
 	//进入聊天室
-	service.JoinRoom(userObj,ws)
+	service.JoinRoom(userObj,ws,userHash)
 	//离开聊天室
 	defer service.LeaveRoom(userObj)
 

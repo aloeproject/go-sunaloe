@@ -10,6 +10,7 @@ import (
 	"time"
 	"log"
 	"net/http"
+	"path"
 )
 
 var PAGE_SIZE = 10
@@ -26,8 +27,8 @@ type ArticleController struct {
 	BaseController
 }
 
-func uploadImg(req *http.Request) (string) {
-	f,h,err := req.FormFile("first_image")
+func uploadImg(req *http.Request,imageName string) (string) {
+	f,h,err := req.FormFile(imageName)
 	check(err)
 	filename := h.Filename
 	//时间戳做随机
@@ -84,7 +85,7 @@ func (this *ArticleController) Add()  {
 		f,_,_ := this.Ctx.Request.FormFile("first_image")
 		file := ""
 		if f != nil {
-			file = uploadImg(this.Ctx.Request)
+			file = uploadImg(this.Ctx.Request,"first_image")
 		}
 
 		if title != "" && content != "" {
@@ -124,7 +125,7 @@ func (this *ArticleController) Edit(){
 		f,_,_ := this.Ctx.Request.FormFile("first_image")
 		file := ""
 		if f != nil {
-			file = uploadImg(this.Ctx.Request)
+			file = uploadImg(this.Ctx.Request,"first_image")
 		}
 
 		re := repository.ArticleRepository{Category_id:categoryId, Title:title, Content:content,Title_img:file}
@@ -143,7 +144,7 @@ func (this *ArticleController) Edit(){
 	this.Render()
 }
 
-func (this *BaseController) Del(){
+func (this *ArticleController) Del(){
 	if this.Ctx.Input.IsPost() {
 		articleId,_ := this.GetInt("aid")
 		re := repository.ArticleRepository{}
@@ -159,4 +160,31 @@ func (this *BaseController) Del(){
 		this.ServeJSON()
 	}
 	this.Abort("404")
+}
+
+type uploadImage struct {
+	Name string `json:"name"`
+	Url string  `json:"url"`
+	State string `json:"state"`
+}
+
+func (this *ArticleController) ImageUpload() {
+	stateStr := "ERROR"
+	var img uploadImage
+	img.Name = ""
+	img.Url = ""
+	img.State = stateStr
+
+	if this.Ctx.Input.IsPost() {
+		f,_,_ := this.Ctx.Request.FormFile("upfile")
+		if f != nil {
+			filename := uploadImg(this.Ctx.Request,"upfile")
+			stateStr = "SUCCESS"
+			img.Name = path.Base(filename)
+			img.Url = "/"+path.Clean(filename)
+			img.State = stateStr
+		}
+	}
+	this.Data["json"] = &img
+	this.ServeJSON()
 }
