@@ -13,7 +13,6 @@ import (
 	"path"
 )
 
-var PAGE_SIZE = 10
 
 func check(err error) {
 	//检查并定义一个panic异常

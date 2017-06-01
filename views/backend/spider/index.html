@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">抓取文章列表</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>标题</th>
+                        <th>抓取时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{range $index,$item := .article_list }}
+                        <tr>
+                            <td><a href="/admin/sogou-spider/{{$item.Id}}">{{$item.Title}}</td>
+                            <td>{{$item.Create_time}}</td>
+                            <td>删除</td>
+                        </tr>
+                    {{end}}
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.table-responsive -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-lg-4 col-lg-offset-8">
+        <div class="page">
+            <ul class="pagination"></ul>
+        </div>
+    </div>
+</div>
+

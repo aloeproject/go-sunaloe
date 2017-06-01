@@ -29,6 +29,8 @@ func init() {
 	beego.Router("/admin/article/add", &ad.ArticleController{},"post,get:Add")
 	beego.Router("/admin/article/edit", &ad.ArticleController{},"post,get:Edit")
 	beego.Router("/admin/article/del", &ad.ArticleController{},"post:Del")
+	beego.Router("/admin/sogou-spider", &ad.SogouSpiderController{},"get:Index")
+	beego.Router("/admin/sogou-spider/:id([0-9]+)", &ad.SogouSpiderController{},"get:Detail")
 	beego.Router("/admin/article/upload_image", &ad.ArticleController{},"get,post:ImageUpload")
 	//分类
 	beego.Router("/admin/category", &ad.CategoryController{},"get:Index")
