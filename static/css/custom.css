@@ -427,6 +427,10 @@ figure {
 	border: 1px dashed #D5D5D5;
 	padding: 10px;
 }
+
+.orig-info a {
+	color: #0F86E8;
+}
 /**
  * 6.0 - Footer
  */
