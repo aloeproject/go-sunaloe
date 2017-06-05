@@ -7,14 +7,14 @@
             bootstrapMajorVersion: 3,
             size: "small",
             onPageClicked: function(e,originalEvent,type,page){
-                window.location.href = "/admin/article?p=" + page
+                window.location.href = "/admin/spider?p=" + page
             }
         });
 
-        $(".js-article-del").on('click',function () {
+        $(".js-spider-del").on('click',function () {
             if(confirm("是否确认删除?")) {
                 var aid = $(this).attr("data-value")
-                $.post('/admin/article/del',{aid:aid},function (json) {
+                $.post('/admin/spider/del',{aid:aid},function (json) {
                     if (json.Code == 200) {
                         alert("删除成功")
                         window.location.reload()
@@ -25,12 +25,12 @@
             }
         })
 
-        $(".js-article-down").on('click',function () {
-            if(confirm("是否确认下线?")) {
+        $(".js-spider-blacklist").on('click',function () {
+            if(confirm("是否放入黑名单?")) {
                 var aid = $(this).attr("data-value")
-                $.post('/admin/article/down',{aid:aid},function (json) {
+                $.post('/admin/spider/black_list',{aid:aid},function (json) {
                     if (json.Code == 200) {
-                        alert("下线成功")
+                        alert("成功")
                         window.location.reload()
                     } else {
                         alert(json.Msg)
@@ -39,12 +39,12 @@
             }
         })
 
-        $(".js-article-up").on('click',function () {
-            if(confirm("是否确认上线?")) {
+        $(".js-spider-move").on('click',function () {
+            if(confirm("移动到正常文章?")) {
                 var aid = $(this).attr("data-value")
-                $.post('/admin/article/up',{aid:aid},function (json) {
+                $.post('/admin/spider/move',{aid:aid},function (json) {
                     if (json.Code == 200) {
-                        alert("上线成功")
+                        alert("成功")
                         window.location.reload()
                     } else {
                         alert(json.Msg)

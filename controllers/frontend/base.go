@@ -13,6 +13,9 @@ type BaseController struct {
 }
 
 func (this *BaseController) init()  {
+	controllerName,actionName := this.GetControllerAndAction()
+	this.Data["controllerName"] = controllerName
+	this.Data["actionName"] = actionName
 	this.Layout = "frontend/layout/layout.html"
 }
 

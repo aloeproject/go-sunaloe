@@ -62,6 +62,22 @@ func (this *ArticleController) Index()  {
 	this.Render()
 }
 
+func (this *ArticleController) Index_spider()  {
+	this.init()
+	rep := repository.ArticleRepository{}
+	//获得当前页码
+	thisPage,_ := this.GetInt("p",1)
+	articleList,_ := rep.List(thisPage -1,PAGE_SIZE)
+	count,_ := rep.Count()
+	page := helper.NewPage(count,thisPage,PAGE_SIZE,articleList)
+	this.LayoutSections = make(map[string]string)
+	this.LayoutSections["Scripts"] = "backend/article/script.html"
+	this.Data["article_list"] = articleList
+	this.Data["page"] = page
+	this.TplName = "backend/article/list.html"
+	this.Render()
+}
+
 func (this *ArticleController) Add()  {
 	this.init()
 	this.TplName = "backend/article/add.html"
@@ -148,6 +164,46 @@ func (this *ArticleController) Del(){
 		articleId,_ := this.GetInt("aid")
 		re := repository.ArticleRepository{}
 		st,err := re.Delete(articleId)
+		var ret JsonResponse
+		if st == true {
+			ret.Code = 200
+		} else {
+			ret.Code = 400
+			ret.Msg = fmt.Sprint(err)
+		}
+		this.Data["json"] = &ret
+		this.ServeJSON()
+	}
+	this.Abort("404")
+}
+/**
+   下线文章
+ */
+func (this *ArticleController) Down(){
+	if this.Ctx.Input.IsPost() {
+		articleId,_ := this.GetInt("aid")
+		re := repository.ArticleRepository{}
+		st,err := re.SetState(articleId,1)
+		var ret JsonResponse
+		if st == true {
+			ret.Code = 200
+		} else {
+			ret.Code = 400
+			ret.Msg = fmt.Sprint(err)
+		}
+		this.Data["json"] = &ret
+		this.ServeJSON()
+	}
+	this.Abort("404")
+}
+/**
+   上线文章
+ */
+func (this *ArticleController) Up(){
+	if this.Ctx.Input.IsPost() {
+		articleId,_ := this.GetInt("aid")
+		re := repository.ArticleRepository{}
+		st,err := re.SetState(articleId,10)
 		var ret JsonResponse
 		if st == true {
 			ret.Code = 200

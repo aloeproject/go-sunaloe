@@ -417,6 +417,16 @@ figure {
     color: #000;
 }
 
+.index-nav-selected a {
+	padding-bottom:5px;
+	border-bottom:1px solid #000
+}
+.orig-info {
+	font-size: 16px;
+	margin: 20px 30px 0 30px;
+	border: 1px dashed #D5D5D5;
+	padding: 10px;
+}
 /**
  * 6.0 - Footer
  */

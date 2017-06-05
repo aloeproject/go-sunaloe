@@ -28,6 +28,11 @@
                         <td>{{$item.Create_time}}</td>
                         <td>{{$item.Update_time}}</td>
                         <td><a href="/admin/article/edit?aid={{$item.Id}}">修改</a>|
+                            {{if eq $item.Status 10 }}
+                            <a href="javascript:void(0)" class="js-article-down" data-value="{{$item.Id}}">下线文章</a>|
+                            {{else}}
+                            <a href="javascript:void(0)" class="js-article-up" data-value="{{$item.Id}}">上线文章</a>|
+                            {{end}}
                             <a href="javascript:void(0)" class="js-article-del" data-value="{{$item.Id}}">删除</a>
                         </td>
                     </tr>

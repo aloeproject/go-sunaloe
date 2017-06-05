@@ -29,6 +29,10 @@ type Article struct {
 	Title string
 	Content string
 	Title_img string
+	Author string
+	Article_source_url string
+	Article_source_name string
+	Article_source_type int
 	Status int
 	Create_time string
 	Update_time string
@@ -52,6 +56,9 @@ type SpiderArticle struct {
 	Id int
 	Title string
 	Author string
+	Source_web string
+	Source_url string
+	Status int
 	Content string
 	Create_time string
 }

@@ -16,6 +16,8 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="/" data-hover="Home">首页</a></li>
+                        <li {{if eq .controllerName "OriginalController"}}class="index-nav-selected"{{end}}><a href="/o">{{if eq .controllerName "OriginalController" }}@{{end}}个人原创</a></li>
+                        <li {{if eq .controllerName "SpiderController"}}class="index-nav-selected"{{end}}><a href="/w">{{if eq .controllerName "SpiderController" }}@{{end}}精彩网文</a></li>
                         <li><a href="/about" data-hover="About">关于</a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->

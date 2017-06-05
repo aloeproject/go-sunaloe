@@ -35,7 +35,7 @@ func (this *BaseController) IsPost() bool {
 }
 //检查页面
 func (this *BaseController) checkPage(url string){
-	state := false
+	state := true
 	switch url {
 	case "/auth/login","/auth/reg","/auth/login_post","/auth/reg_post":
 		state = true
