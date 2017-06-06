@@ -4,11 +4,11 @@
             <header class="entry-header">
                 <h1 class="entry-title">{{.article_info.Title}}</h1>
                 <div class="entry-meta">
-                    <span class="post-category"><a href="#">{{.article_info.Category_name}}</a></span>
+                    <span class="post-category"><a href="/c/{{.article_info.Category_name}}">{{.article_info.Category_name}}</a></span>
 
-                    <span class="post-date"><a href="#"><time class="entry-date">{{.article_info.Create_time}}</time></a></span>
+                    <span class="post-date"><a href="javascript:void(0)"><time class="entry-date">{{.article_info.Create_time}}</time></a></span>
 
-                    <span class="post-author"><a href="#">系统管理员</a></span>
+                    <span class="post-author"><a href="javascript:void(0)">{{if ne .article_info.Author ""}}{{.article_info.Author}}{{end}}</a></span>
                     <span class="post-views"><a href="javascript:void(0)">阅读数:{{.click_num}}</a></span>
                     <!--
                     <span class="comments-link"><a href="#">4 Comments</a></span>
@@ -31,7 +31,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="orig-info">
-            <p>来源: <a href="{{.article_info.Article_source_url}}">{{.article_info.Article_source_name}}</a></p>
+            <p>来源: <a target="_blank" href="{{.article_info.Article_source_url}}">{{.article_info.Article_source_name}}</a></p>
             <p>作者: {{.article_info.Author}} </p>
             <p>文章来自互联网如果对个人或单位有侵犯其著作权行为，请您联系我们：lk_qmail@foxmail.com</p>
         </div>
