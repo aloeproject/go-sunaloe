@@ -92,7 +92,8 @@ func (this *ArticleRepository) List(currentPage int,pageSize int) (*[]ArticleLis
 	}
 
 	//当前页从0 开始
-	sql := fmt.Sprintf("SELECT a.Id as id,category_id,ifnull(c.name,'无') as category_name,title,content,title_img,status,a.create_time as create_time,a.update_time as update_time" +
+	sql := fmt.Sprintf("SELECT a.Id as id,category_id,ifnull(c.name,'无') as category_name,title,author," +
+		"content,title_img,status,a.create_time as create_time,a.update_time as update_time" +
 		" FROM article a LEFT JOIN category c ON a.Category_id = c.id WHERE status IN (%s) %s ORDER BY create_time desc LIMIT %d,%d",stWhere,where,currentPage * pageSize,pageSize)
 	_ , err := model.Raw(sql).QueryRows(&list)
 	if err != nil {

@@ -64,7 +64,6 @@ func (this *IndexController) Index()  {
 	this.Data["newest_list"] = newArticle
 	this.Data["date_category"] = dateCategory
 	this.Data["category_list"] = articleCate
-	fmt.Println(this.Data)
 	this.TplName = "frontend/index/index.html"
 	this.Render()
 }
