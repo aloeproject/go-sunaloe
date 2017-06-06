@@ -40,6 +40,7 @@ func init() {
 	beego.Router("/admin/spider/:id([0-9]+)", &ad.SpiderController{},"get:Detail")
 	beego.Router("/admin/spider/move", &ad.SpiderController{},"post:MoveArticle")
 	beego.Router("/admin/spider/del", &ad.SpiderController{},"post:Del")
+	beego.Router("/admin/spider/edit", &ad.SpiderController{},"post:Edit")
 	beego.Router("/admin/spider/black_list", &ad.SpiderController{},"post:Blacklist")
 
 	//文章上传

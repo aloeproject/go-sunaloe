@@ -54,12 +54,13 @@ type ArticleClick struct {
 
 type SpiderArticle struct {
 	Id int
+	Article_hash string
 	Title string
 	Author string
+	Content string
 	Source_web string
 	Source_url string
 	Status int
-	Content string
 	Create_time string
 }
 

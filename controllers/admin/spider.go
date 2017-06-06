@@ -46,6 +46,41 @@ func (this *SpiderController)  Detail() {
 	this.Render()
 }
 
+func (this *SpiderController) Edit()  {
+	this.init()
+	this.LayoutSections = make(map[string]string)
+	this.LayoutSections["Scripts"] = "backend/article/require-umeditor.html"
+	this.LayoutSections["HeadHtml"] = "backend/article/headhtml.html"
+
+	this.Data["operation_msg"] = ""
+
+	//获得文章详情
+	spiderRep := new(repository.SpiderArticleRepository)
+	articleId := this.GetString("aid")
+	spiderRep.Id,_ = strconv.Atoi(articleId)
+	articleInfo := spiderRep.GetInfoById()
+
+	if this.Ctx.Input.IsPost() {
+		title := this.GetString("title")
+		author := this.GetString("author")
+		content := this.GetString("content")
+		sourceName := this.GetString("source_name")
+		sourceUrl := this.GetString("source_url")
+
+		re := repository.SpiderArticleRepository{Title:title,Content:content,Author:author,Source_url:sourceUrl,Source_web:sourceName}
+		if ok,err:=re.Edit(articleInfo.Id);ok {
+			this.Data["operation_msg"] = "修改成功"
+			rep := repository.SpiderArticleRepository{Id:articleInfo.Id}
+			articleInfo = rep.GetInfoById()
+		} else {
+			this.Data["operation_msg"] = fmt.Sprintf("修改失败，错误原因:%s",err)
+		}
+	}
+	this.Data["article_info"] = articleInfo
+	this.TplName = "backend/spider/detail.html"
+	this.Render()
+}
+
 func (this *SpiderController) MoveArticle(){
 	//获得文章详情
 	spiderRep := new(repository.SpiderArticleRepository)

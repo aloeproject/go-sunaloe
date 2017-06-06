@@ -56,6 +56,35 @@ func (this *SpiderArticleRepository) Count() (int ,error)  {
 	return count,nil
 }
 
+func (this *SpiderArticleRepository) Edit(id int) (bool,error) {
+	model := orm.NewOrm()
+	ar := models.SpiderArticle{Id:id}
+	if model.Read(&ar) == nil {
+		if this.Title != "" {
+			ar.Title = this.Title
+		}
+		if this.Author != "" {
+			ar.Author = this.Author
+		}
+		if this.Content != "" {
+			ar.Content = this.Content
+		}
+		if this.Source_web != "" {
+			ar.Source_web = this.Source_web
+		}
+		if this.Source_url != "" {
+			ar.Source_url = this.Source_url
+		}
+		num,err := model.Update(&ar)
+		if err != nil {
+			return false,err
+		}
+		if num != 0 {
+			return true,nil
+		}
+	}
+	return false,errors.New("没有做修改")
+}
 
 func (this *SpiderArticleRepository) Delete(id int) (bool,error) {
 	model := orm.NewOrm()
