@@ -34,7 +34,7 @@ func (this *SpiderArticleRepository) List(currentPage int,pageSize int) (*[]Spid
 	var list []SpiderArticleRepository
 
 	//当前页从0 开始
-	sql := fmt.Sprintf("SELECT * FROM spider_article WHERE status in (0,10) ORDER BY create_time,id DESC LIMIT %d,%d",currentPage * pageSize,pageSize)
+	sql := fmt.Sprintf("SELECT * FROM spider_article WHERE status in (0,10) ORDER BY create_time DESC,id DESC LIMIT %d,%d",currentPage * pageSize,pageSize)
 	_ , err := model.Raw(sql).QueryRows(&list)
 	if err != nil {
 		return nil,models.EmptyData

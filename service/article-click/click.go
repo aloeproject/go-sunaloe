@@ -21,8 +21,8 @@ func init() {
 func  SetClick(aid int,uuid string,ip string)  {
 	k := fmt.Sprintf("article_click:%d-%s",aid,uuid)
 	if mycache.IsExist(k) == false {
-		//插入的点击半小时算重新阅读
-		mycache.Put(k,1,1800 * time.Second)
+		//插入的点击一小时算重新阅读
+		mycache.Put(k,1,3600 * time.Second)
 		rep := new(repository.ArticleClickRepository)
 		_,err := rep.Save(aid,ip,uuid)
 		if err != nil {
@@ -48,8 +48,8 @@ func  GetClick(aid int) int {
 		log.Print("获得点击率失败")
 		return 0
 	} else {
-		//点击率30秒更新一次
-		if err := mycache.Put(k,num,30*time.Second);err != nil {
+		//点击率120秒更新一次
+		if err := mycache.Put(k,num,120*time.Second);err != nil {
 			log.Print("设置点击数失败aid:",aid)
 		}
 		return num
