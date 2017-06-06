@@ -73,6 +73,7 @@ func (this *IndexController) Detail()  {
 	aid := this.Ctx.Input.Param(":id")
 	id,_ := helper.String2int(aid)
 	rep := repository.ArticleRepository{Id:id}
+	nextprevArticle := repository.NextPrevArticle(id)
 	//设置点击量
 	article_click.SetClick(id,this.UUID,this.Ctx.Input.IP())
 	//获取点击率
@@ -97,6 +98,7 @@ func (this *IndexController) Detail()  {
 	this.Data["date_category"] = dateCategory
 	this.Data["category_list"] = articleCate
 	this.Data["click_num"] = clickNum
+	this.Data["nextprev_article"] = nextprevArticle
 
 	this.TplName = "frontend/index/detail.html"
 	this.Render()

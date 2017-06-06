@@ -27,6 +27,19 @@
     </main>
     {{template "frontend/layout/right-sidebar.html" .}}
 </div>
+<div class="row">
+    <div class="col-md-8">
+        <div class="prev-next-article">
+            {{range $k,$v :=  .nextprev_article}}
+            {{if eq $k  0 }}
+            <p>上一篇: {{if eq $v.Title "" }}无{{else}}<a href="/d/{{$v.Id}}.html">{{$v.Title}}</a>{{end}}</p>
+            {{else}}
+            <p>下一篇: {{if eq $v.Title "" }}无{{else}}<a href="/d/{{$v.Id}}.html">{{$v.Title}}</a>{{end}}</p>
+            {{end}}
+            {{end}}
+        </div>
+    </div>
+</div>
 {{if eq .article_info.Article_source_type 2 }}
 <div class="row">
     <div class="col-md-12">

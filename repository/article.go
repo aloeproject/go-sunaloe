@@ -261,3 +261,19 @@ func (this *ArticleRepository) SetState(id int,state int) (bool,error) {
 	}
 	return false,errors.New("不存在此文章")
 }
+
+
+func NextPrevArticle(aid int) (*[2]ArticleList) {
+	model := orm.NewOrm()
+	var ret [2]ArticleList
+	//当前页从0 开始
+	nextSql := fmt.Sprintf("SELECT id,title FROM article WHERE status = 10 AND id < %d ORDER BY id DESC LIMIT 1",aid)
+	prevSql := fmt.Sprintf("SELECT id,title FROM article WHERE status = 10 AND id > %d ORDER BY id ASC LIMIT 1",aid)
+
+	var nextList,prevList  ArticleList
+	model.Raw(nextSql).QueryRow(&nextList)
+	model.Raw(prevSql).QueryRow(&prevList)
+	ret[0] = nextList
+	ret[1] = prevList
+	return &ret
+}

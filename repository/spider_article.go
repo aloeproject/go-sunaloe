@@ -62,7 +62,7 @@ func (this *SpiderArticleRepository) Count() (int ,error)  {
 		where += fmt.Sprintf(" AND keyword = '%s' ",this.Keyword)
 	}
 
-	sql := fmt.Sprintf("SELECT count(1) as ct,keyword FROM spider_article WHERE status in (%d,%d) %s ",constant.SPIDER_ARTCLIE_NORMAL,constant.SPIDER_ARCLIE_MOVED,where)
+	sql := fmt.Sprintf("SELECT count(1) as ct,keyword FROM spider_article WHERE status in (%d,%d) %s ",constant.SPIDER_ARTCLIE_NORMAL,constant.SPIDER_ARCLIE_MOVED)
 	_,err := models.Raw(sql).Values(&res)
 	if err != nil {
 		return 0,err

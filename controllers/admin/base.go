@@ -2,7 +2,6 @@ package admin
 
 import (
 	"github.com/astaxie/beego"
-	//"fmt"
 	"fmt"
 	"myweb/repository"
 )
