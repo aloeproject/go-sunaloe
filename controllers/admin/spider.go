@@ -16,16 +16,20 @@ type SpiderController struct {
 
 func (this *SpiderController)  Index() {
 	this.init()
-
 	rep := new(repository.SpiderArticleRepository)
+	keyword := this.Ctx.Input.Param(":keyword")
+	rep.Keyword = keyword
 	thisPage,_ := this.GetInt("p",1)
 	articleList,_ := rep.List(thisPage - 1,SPIDER_PAGE_SIZE)
 	count,_ := rep.Count()
+	keywordGroup := rep.GetKeywordGroup()
 	page := helper.NewPage(count,thisPage,SPIDER_PAGE_SIZE,articleList)
 	this.LayoutSections = make(map[string]string)
 	this.LayoutSections["Scripts"] = "backend/spider/script.html"
 	this.Data["page"] = page
 	this.Data["article_list"] = articleList
+	this.Data["keyword_group"] = keywordGroup
+	this.Data["select_keyword"] = keyword
 	this.TplName = "backend/spider/index.html"
 	this.Render()
 }

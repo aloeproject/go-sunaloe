@@ -56,6 +56,7 @@ type SpiderArticle struct {
 	Id int
 	Article_hash string
 	Title string
+	Keyword string
 	Author string
 	Content string
 	Source_web string

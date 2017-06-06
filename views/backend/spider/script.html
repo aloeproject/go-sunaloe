@@ -7,7 +7,7 @@
             bootstrapMajorVersion: 3,
             size: "small",
             onPageClicked: function(e,originalEvent,type,page){
-                window.location.href = "/admin/spider?p=" + page
+                window.location.href = window.location.pathname + "?p=" + page
             }
         });
 

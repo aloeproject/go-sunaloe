@@ -37,6 +37,7 @@ func init() {
 	beego.Router("/admin/article/up", &ad.ArticleController{},"post:Up")
 	beego.Router("/admin/article/del", &ad.ArticleController{},"post:Del")
 	beego.Router("/admin/spider", &ad.SpiderController{},"get:Index")
+	beego.Router("/admin/spider/s/:keyword([0-9a-zA-Z_]+)", &ad.SpiderController{},"get:Index")
 	beego.Router("/admin/spider/:id([0-9]+)", &ad.SpiderController{},"get:Detail")
 	beego.Router("/admin/spider/move", &ad.SpiderController{},"post:MoveArticle")
 	beego.Router("/admin/spider/del", &ad.SpiderController{},"post:Del")
