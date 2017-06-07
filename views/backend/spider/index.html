@@ -5,11 +5,34 @@
     <!-- /.col-lg-12 -->
 </div>
 <div class="row">
-    <div class="col-lg-12">
-        <ul class="nav nav-tabs">
-            <li {{if eq .select_keyword ""}}class="active"{{end}}><a href="/admin/spider">全部</a></li>
+    <div class="col-md-1" style="text-align: center">
+        <h4>来源网站</h4>
+    </div>
+    <ul class="nav nav-pills">
+        <li {{if eq .select_web ""}}class="active"{{end}}><a href="/admin/spider">全部</a></li>
+        {{range $web,$count := .source_group}}
+        <li {{if eq $.select_web $web}}class="active"{{end}}><a href="/admin/spider/w/{{$web}}">{{$web}}({{$count}})</a></li>
+        {{end}}
+    </ul>
+</div>
+<br/>
+<div class="row">
+    <div class="col-md-1" style="text-align: center">
+        <h4>标签</h4>
+    </div>
+    <div class="col-md-11">
+        <ul class="nav nav-pills">
+            {{if eq $.select_web "" }}
+                <li {{if eq .select_keyword ""}}class="active"{{end}}><a href="/admin/spider">全部</a></li>
+            {{else}}
+                <li {{if eq .select_keyword ""}}class="active"{{end}}><a href="/admin/spider/w/{{$.select_web}}">全部</a></li>
+            {{end}}
             {{range $keyword,$count := .keyword_group}}
-                <li {{if eq $.select_keyword $keyword}}class="active"{{end}}><a href="/admin/spider/s/{{$keyword}}">{{$keyword}}({{$count}})</a></li>
+                {{if eq $.select_web "" }}
+                    <li {{if eq $.select_keyword $keyword}}class="active"{{end}}><a href="/admin/spider/s/{{$keyword}}">{{$keyword}}({{$count}})</a></li>
+                {{else}}
+                    <li {{if eq $.select_keyword $keyword}}class="active"{{end}}><a href="/admin/spider/w/{{$.select_web}}/s/{{$keyword}}">{{$keyword}}({{$count}})</a></li>
+                {{end}}
             {{end}}
         </ul>
     </div>

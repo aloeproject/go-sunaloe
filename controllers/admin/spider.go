@@ -18,18 +18,24 @@ func (this *SpiderController)  Index() {
 	this.init()
 	rep := new(repository.SpiderArticleRepository)
 	keyword := this.Ctx.Input.Param(":keyword")
+	selectWeb := this.Ctx.Input.Param(":web")
 	rep.Keyword = keyword
+	rep.Source_web = selectWeb
 	thisPage,_ := this.GetInt("p",1)
 	articleList,_ := rep.List(thisPage - 1,SPIDER_PAGE_SIZE)
 	count,_ := rep.Count()
 	keywordGroup := rep.GetKeywordGroup()
+	sourceGroup := rep.GetSpiderWebGroup()
 	page := helper.NewPage(count,thisPage,SPIDER_PAGE_SIZE,articleList)
 	this.LayoutSections = make(map[string]string)
 	this.LayoutSections["Scripts"] = "backend/spider/script.html"
 	this.Data["page"] = page
+	fmt.Println(count)
 	this.Data["article_list"] = articleList
 	this.Data["keyword_group"] = keywordGroup
+	this.Data["source_group"] = sourceGroup
 	this.Data["select_keyword"] = keyword
+	this.Data["select_web"] = selectWeb
 	this.TplName = "backend/spider/index.html"
 	this.Render()
 }

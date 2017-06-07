@@ -40,6 +40,10 @@ func (this *SpiderArticleRepository) List(currentPage int,pageSize int) (*[]Spid
 		where += fmt.Sprintf(" AND keyword = '%s' ",this.Keyword)
 	}
 
+	if this.Source_web != "" {
+		where += fmt.Sprintf(" AND source_web = '%s' ",this.Source_web)
+	}
+
 	//当前页从0 开始
 	sql := fmt.Sprintf("SELECT * FROM spider_article WHERE status in (%d,%d) %s ORDER BY create_time DESC,id DESC LIMIT %d,%d",
 		constant.SPIDER_ARTCLIE_NORMAL,constant.SPIDER_ARCLIE_MOVED,
@@ -62,7 +66,12 @@ func (this *SpiderArticleRepository) Count() (int ,error)  {
 		where += fmt.Sprintf(" AND keyword = '%s' ",this.Keyword)
 	}
 
-	sql := fmt.Sprintf("SELECT count(1) as ct,keyword FROM spider_article WHERE status in (%d,%d) %s ",constant.SPIDER_ARTCLIE_NORMAL,constant.SPIDER_ARCLIE_MOVED)
+	if this.Source_web != "" {
+		where += fmt.Sprintf(" AND source_web = '%s' ",this.Source_web)
+	}
+
+	sql := fmt.Sprintf("SELECT count(1) as ct,keyword FROM spider_article WHERE status in (%d,%d) %s",
+		constant.SPIDER_ARTCLIE_NORMAL,constant.SPIDER_ARCLIE_MOVED,where)
 	_,err := models.Raw(sql).Values(&res)
 	if err != nil {
 		return 0,err
@@ -124,13 +133,36 @@ func (this *SpiderArticleRepository) GetKeywordGroup() map[string]int {
 	models := orm.NewOrm()
 	var res  []orm.Params
 	ret := make(map[string]int)
-	sql := fmt.Sprintf("SELECT count(1) as ct,keyword FROM spider_article WHERE status in (%d,%d) GROUP BY keyword",
-		constant.SPIDER_ARTCLIE_NORMAL,constant.SPIDER_ARCLIE_MOVED)
+
+	where := ""
+
+
+	if this.Source_web != "" {
+		where += fmt.Sprintf(" AND source_web = '%s' ",this.Source_web)
+	}
+
+	sql := fmt.Sprintf("SELECT count(1) as ct,keyword FROM spider_article WHERE status in (%d,%d) %s GROUP BY keyword",
+		constant.SPIDER_ARTCLIE_NORMAL,constant.SPIDER_ARCLIE_MOVED,where)
 	models.Raw(sql).Values(&res)
 	for _,item := range res {
 		ct,_ := strconv.Atoi(item["ct"].(string))
 		kword := item["keyword"].(string)
 		ret[kword] = ct
+	}
+	return ret
+}
+
+func (this *SpiderArticleRepository) GetSpiderWebGroup() map[string]int {
+	models := orm.NewOrm()
+	var res  []orm.Params
+	ret := make(map[string]int)
+	sql := fmt.Sprintf("SELECT count(1) as ct,source_web FROM spider_article WHERE status in (%d,%d) GROUP BY source_web",
+		constant.SPIDER_ARTCLIE_NORMAL,constant.SPIDER_ARCLIE_MOVED)
+	models.Raw(sql).Values(&res)
+	for _,item := range res {
+		ct,_ := strconv.Atoi(item["ct"].(string))
+		source_web := item["source_web"].(string)
+		ret[source_web] = ct
 	}
 	return ret
 }
